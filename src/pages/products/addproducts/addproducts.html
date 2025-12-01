@@ -1,0 +1,84 @@
+<body class="bg-gray-100 min-h-screen p-4 flex justify-center items-start">
+  <div class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-6 mt-6">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-800">Add New Product</h2>
+
+    <form class="space-y-5" [formGroup]="addProducts">
+      <!-- Product Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Product Name</label>
+        <input
+          type="text"
+          class="w-full mt-1 p-3 border rounded-lg placeholder:italic focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          placeholder="Enter product name"
+          formControlName="productName"
+        />
+      </div>
+
+      <!-- Price and Quantity -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Price</label>
+          <input
+            type="number"
+            class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder="0.00"
+            formControlName="price"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Quantity</label>
+          <input
+            type="number"
+            class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder="1"
+            formControlName="stockQuantity"
+          />
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Category</label>
+        <select
+          formControlName="categoryId"
+          class="w-full mt-1 p-3 border rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="" disabled selected>Select category</option>
+          @for (item of category; track $index) {
+          <option [value]="item.categoryId">{{ item.name }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Image Upload -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Product Image</label>
+        <input
+          type="file"
+          formControlName="productImage"
+          class="w-full mt-1 p-3 border rounded-lg bg-white cursor-pointer"
+        />
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea
+          rows="4"
+          class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          placeholder="Write a short description..."
+          formControlName="productDescription"
+        ></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        (click)="addProduct()"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-medium transition"
+      >
+        Add Product
+      </button>
+    </form>
+  </div>
+</body>

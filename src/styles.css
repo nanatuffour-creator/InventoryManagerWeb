@@ -1,1 +1,121 @@
-/* You can add global styles to this file, and also import other style files */
+/* Enable Tailwind */
+@import 'tailwindcss';
+
+/* =========================================
+COLOR SYSTEM
+========================================= */
+
+/* Light Theme (default) */
+:root {
+  --color-bg: 248 250 255; /* Soft off-white */
+  --color-surface: 255 255 255; /* Pure white cards */
+  --color-text: 18 23 39; /* Dark navy, not pure black */
+  --color-text-muted: 108 115 133; /* Subtle gray-blue */
+
+  --color-primary: 66 92 245; /* Strong SaaS blue */
+  --color-primary-text: 255 255 255;
+
+  --color-success: 38 174 97;
+  --color-warning: 255 170 30;
+  --color-danger: 229 72 77;
+  --color-info: 33 152 199;
+}
+
+/* Dark Theme */
+.dark {
+  --color-bg: 16 18 28; /* Deep cool gray (not pure black) */
+  --color-surface: 28 32 44; /* Slightly lighter card background */
+  --color-text: 236 239 245; /* High contrast soft white */
+  --color-text-muted: 150 158 175;
+
+  --color-primary: 118 140 255; /* Bright neon blue that pops on dark */
+  --color-primary-text: 255 255 255;
+
+  --color-success: 64 214 123;
+  --color-warning: 255 196 78;
+  --color-danger: 255 93 93;
+  --color-info: 96 187 255;
+}
+
+/* Explicit Light Mode (Optional) */
+.light {
+  --color-bg: 247 249 252;
+  --color-surface: 255 255 255;
+  --color-text: 26 31 46;
+  --color-text-muted: 96 101 120;
+  --color-primary: 74 108 247;
+  --color-primary-text: 255 255 255;
+
+  --color-success: 40 167 69;
+  --color-warning: 255 193 7;
+  --color-danger: 220 53 69;
+  --color-info: 23 162 184;
+}
+
+/* =========================================
+UTILITY CLASSES
+========================================= */
+
+/* Backgrounds */
+.bg-app {
+  background-color: rgb(var(--color-bg));
+}
+.bg-surface {
+  background-color: rgb(var(--color-surface));
+}
+
+/* Text colors */
+.text-body {
+  color: rgb(var(--color-text));
+}
+.text-muted {
+  color: rgb(var(--color-text-muted));
+}
+
+/* Primary color utilities */
+.bg-primary {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-primary-text));
+}
+.text-primary {
+  color: rgb(var(--color-primary));
+}
+
+/* Status utilities */
+.text-success {
+  color: rgb(var(--color-success));
+}
+.bg-success {
+  background-color: rgb(var(--color-success));
+  color: #fff;
+}
+
+.text-warning {
+  color: rgb(var(--color-warning));
+}
+.bg-warning {
+  background-color: rgb(var(--color-warning));
+  color: #000;
+}
+
+.text-danger {
+  color: rgb(var(--color-danger));
+}
+.bg-danger {
+  background-color: rgb(var(--color-danger));
+  color: #fff;
+}
+
+.text-info {
+  color: rgb(var(--color-info));
+}
+.bg-info {
+  background-color: rgb(var(--color-info));
+  color: #fff;
+}
+
+/* Smooth transitions */
+
+* {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}

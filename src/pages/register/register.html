@@ -1,0 +1,182 @@
+<div class="min-h-screen flex bg-app text-body">
+  <!-- Left section -->
+  <div class="w-full lg:w-1/2 flex flex-col justify-center px-10 lg:px-24">
+    <!-- Logo -->
+    <h1 class="text-3xl font-mono mb-2 italic text-primary">InventoryIQ</h1>
+
+    <!-- Welcome Text -->
+    <h2 class="text-2xl font-medium mb-2">Create Your Account</h2>
+    <p class="text-muted mb-8">Fill in your details to get started.</p>
+
+    <!-- Register Form -->
+    <form class="space-y-5" #forms="ngForm">
+      <!-- First Name -->
+      <div class="flex gap-2">
+        <div>
+          <label class="text-sm font-medium">First Name</label>
+          <input
+            #firstName="ngModel"
+            name="firstName"
+            required
+            type="text"
+            [(ngModel)]="user.FirstName"
+            class="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="John"
+          />
+          <div>
+            @if (firstName.touched) { @if (firstName.errors?.['required']) {
+            <span class="text-warning">First Name is required.</span>
+            } }
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Last Name</label>
+          <input
+            #lastName="ngModel"
+            name="lastName"
+            required
+            type="text"
+            [(ngModel)]="user.LastName"
+            class="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Doe"
+          />
+          <div>
+            @if (lastName.touched) { @if (lastName.errors?.['required']) {
+            <span class="text-warning">Last Name is required.</span>
+            } }
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="flex gap-2">
+        <div>
+          <label class="text-sm font-medium">Email</label>
+          <input
+            #email="ngModel"
+            name="email"
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            required
+            type="email"
+            [(ngModel)]="user.Email"
+            class="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="example@company.com"
+          />
+          <div>
+            @if (email.touched) { @if (email.errors?.['required']) {
+            <span class="text-warning">Email is required.</span>
+            } @if (email.errors?.['pattern']) {
+            <span class="text-warning">Email is not correct.</span>
+            } }
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Roles</label>
+          <select
+            required
+            name="roles"
+            #roles="ngModel"
+            [(ngModel)]="user.Role"
+            class="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option [ngValue]="Roles.Admin" name="admin">Admin</option>
+            <option [ngValue]="Roles.Manager" name="manager">Manager</option>
+            <option [ngValue]="Roles.Staff" name="staff">Staff</option>
+          </select>
+          @if (roles.touched) { @if (roles.errors?.['required']) {
+          <span class="text-warning">A role is required.</span>
+          } }
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="text-sm font-medium">Password</label>
+        <input
+          required
+          minlength="8"
+          #password="ngModel"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+          type="password"
+          [(ngModel)]="user.Password"
+          name="password"
+          class="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        @if (password.touched) { @if (password.errors?.['required']) {
+        <span class="text-warning">Password is required.</span>
+        } @if (password.errors?.['minlength']) {
+        <span class="text-warning">Password must be 8 characters long.</span>
+        }@if (password.errors?.['pattern']) {
+        <span class="text-warning"
+          >Password must be contain an Uppercase letter, a number, a symbol and a lowercase
+          letter.</span
+        >
+        } }
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <label class="text-sm font-medium">Confirm Password</label>
+        <input
+          type="password"
+          required
+          minlength="8"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+          #confirmPassword="ngModel"
+          [(ngModel)]="user.ConfirmPassword"
+          name="confirmPassword"
+          class="w-full mt-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        @if (confirmPassword.touched) { @if (confirmPassword.errors?.['required']) {
+        <span class="text-warning">Confirm Password is required.</span>
+        } @if (confirmPassword.errors?.['minlength']) {
+        <span class="text-warning">Confirm Password must be 8 characters long.</span>
+        } @if (confirmPassword.errors?.['pattern']) {
+        <span class="text-warning"
+          >Confirm Password must be contain an Uppercase letter, a number, a symbol and a lowercase
+          letter.</span
+        >
+        } }
+      </div>
+
+      <!-- Submit -->
+      <!-- {{ forms.invalid }} -->
+      <button
+        class="w-full bg-primary py-2 rounded-lg hover:opacity-90 transition disabled:bg-info"
+        (click)="addUser()"
+        [disabled]="forms.invalid"
+      >
+        Create Account
+      </button>
+
+      <!-- Login Link -->
+      <div>
+        <p class="text-sm text-center text-gray-500 mt-3">
+          Already have an account?
+          <a class="text-indigo-600 hover:underline" (click)="userService.changeLoginView()"
+            >Log in <span aria-hidden="true">&rarr;</span></a
+          >
+        </p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Right Section -->
+  <div
+    class="hidden lg:flex w-1/2 bg-primary text-primary-text p-16 flex-col justify-center rounded-4xl m-3"
+  >
+    <h2 class="text-4xl font-bold leading-snug mb-6">
+      Start managing your team and inventory with ease.
+    </h2>
+    <p class="text-body text-lg">Create an account to get full access to your dashboard.</p>
+
+    <div class="mt-10 bg-surface backdrop-blur-lg rounded-xl h-80">
+      <img
+        src="https://uploads-ssl.webflow.com/611b82111c177de53409c4b5/61279f2e0c2bf63f579dfbb4_inventory-management.png"
+        alt="image"
+        sizes="(max-width: 600px) 320px, 1024px"
+        class="rounded-xl h-80"
+      />
+    </div>
+  </div>
+</div>

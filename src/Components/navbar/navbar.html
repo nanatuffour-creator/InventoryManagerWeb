@@ -1,0 +1,86 @@
+<div class="h-screen flex bg-gray-100">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-slate-300 flex flex-col p-6">
+    <!-- Logo -->
+    <div class="mb-8">
+      <div class="w-8 h-8 bg-indigo-600 rounded-lg"></div>
+    </div>
+
+    <!-- Main Nav -->
+    <nav class="flex-1 space-y-1">
+      <!-- Dashboard -->
+      <a
+        routerLink="/layout/dashboard"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>🏠</span> Dashboard
+      </a>
+
+      <!-- Products -->
+      <a
+        routerLink="/products"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>👥</span> Products
+      </a>
+
+      <!-- Customers -->
+      <a
+        routerLink="/customers"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>📁</span> Customers
+      </a>
+
+      <!-- Suppliers -->
+      <a
+        routerLink="/suppliers"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>📅</span> Suppliers
+      </a>
+
+      <!-- Category -->
+      <a
+        routerLink="/categories"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>📄</span> Category
+      </a>
+
+      <!-- Invoices -->
+      <a
+        routerLink="/invoices"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>📊</span> Invoice
+      </a>
+
+      <!-- Purchases -->
+      <a
+        routerLink="/purchases"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+      >
+        <span>📊</span> Purchases
+      </a>
+    </nav>
+
+    <!-- Settings -->
+    <div class="mt-auto">
+      <a
+        routerLink="/settings"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+        class="flex items-center gap-3 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+      >
+        ⚙ Settings
+      </a>
+    </div>
+  </aside>
+</div>
