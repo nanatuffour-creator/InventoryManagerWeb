@@ -216,6 +216,7 @@
 
                               <form class="space-y-5" [formGroup]="editProducts">
                                 <!-- Product Name -->
+                                <input type="hidden" formControlName="productId" />
                                 <div>
                                   <label class="block text-sm font-medium text-gray-700"
                                     >Product Name</label
@@ -263,6 +264,7 @@
                                     >Category</label
                                   >
                                   <select
+                                    formControlName="categoryId"
                                     class="w-full mt-1 p-3 border rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
                                   >
                                     <option value="" disabled selected>Select category</option>

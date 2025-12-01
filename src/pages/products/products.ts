@@ -36,6 +36,7 @@ export class Products implements OnInit {
   });
 
   editProducts: FormGroup = new FormGroup({
+    productId: new FormControl(),
     productName: new FormControl(),
     productImage: new FormControl(),
     productDescription: new FormControl(),
@@ -85,11 +86,11 @@ export class Products implements OnInit {
   }
 
   editProduct() {
-    const edited = this.editProducts.value;
-
-    this.productServices.editProducts(edited).subscribe({
-      next: (value) => console.log('Updated:', value),
-      error: (err) => console.error('Error:', err),
-    });
+    const dto = this.editProducts.value;
+    productId: Number(this.editProducts.value.productId),
+      this.productServices.editProducts(dto).subscribe({
+        next: (res) => console.log('Updated:', res),
+        error: (err) => console.error('Error:', err),
+      });
   }
 }

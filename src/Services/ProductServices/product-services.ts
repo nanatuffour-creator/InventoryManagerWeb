@@ -45,9 +45,8 @@ export class ProductServices {
   editProducts(dto: any): Observable<any> {
     const payload = {
       ...dto,
-      categoryId: Number(dto.categoryId),
+      categoryId: Number(dto.categoryId), // ensure numeric
     };
-
     return this.http.put<any>(this.url3, payload);
   }
 }
