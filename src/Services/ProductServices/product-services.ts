@@ -42,11 +42,19 @@ export class ProductServices {
     console.log(products);
   }
 
-  editProducts(dto: any): Observable<any> {
+  editProduct(dto: any): Observable<any> {
+    const id = dto.productId;
+
     const payload = {
-      ...dto,
-      categoryId: Number(dto.categoryId), // ensure numeric
+      productId: Number(dto.productId),
+      productName: dto.productName,
+      productImage: dto.productImage,
+      productDescription: dto.productDescription,
+      price: Number(dto.price),
+      stockQuantity: Number(dto.stockQuantity),
+      categoryId: Number(dto.categoryId),
     };
-    return this.http.put<any>(this.url3, payload);
+
+    return this.http.put(`${this.url}/${id}`, payload);
   }
 }

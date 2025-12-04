@@ -47,6 +47,7 @@ export class Products implements OnInit {
   viewAddProduct() {
     this.router.navigate(['/add-product']);
   }
+
   getProd() {
     this.productServices.getProducts().subscribe({
       next: (response: ProductsInterface[]) => {
@@ -86,11 +87,37 @@ export class Products implements OnInit {
   }
 
   editProduct() {
-    const dto = this.editProducts.value;
-    productId: Number(this.editProducts.value.productId),
-      this.productServices.editProducts(dto).subscribe({
-        next: (res) => console.log('Updated:', res),
-        error: (err) => console.error('Error:', err),
-      });
+    const form = this.editProducts.value;
+
+    const dto = {
+      productId: Number(form.productId),
+      productName: form.productName,
+      productDescription: form.productDescription,
+      productImage: form.productImage,
+      price: Number(form.price),
+      stockQuantity: Number(form.stockQuantity),
+      categoryId: Number(form.categoryId),
+    };
+
+    this.productServices.editProduct(dto).subscribe({
+      next: (res) => {
+        console.log('Updated:', res);
+        alert("Product Edited Successfully")
+        this.getProd();
+      },
+      error: (err) => console.error('Error:', err),
+    });
+  }
+
+  openEditDialog(product: any) {
+    this.editProducts.patchValue({
+      productId: product.productId,
+      productName: product.productName,
+      productImage: product.productImage,
+      productDescription: product.productDescription,
+      price: product.price,
+      stockQuantity: product.stockQuantity,
+      categoryId: product.categoryId,
+    });
   }
 }
