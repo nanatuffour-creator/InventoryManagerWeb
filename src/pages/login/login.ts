@@ -25,11 +25,11 @@ export class Login {
     this.userService.verifyUser(this.user).subscribe({
       next: (result) => {
         console.log(result);
-        console.log('Login Sucessful');
+        alert('Login Sucessful');
         this.router.navigate(['/layout/dashboard']);
       },
       error: (err) => {
-        console.log(err);
+        alert(err);
       },
     });
   }

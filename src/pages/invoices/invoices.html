@@ -119,7 +119,7 @@
 
 
     </div>
-
+    <!-- {{invoices.length}} -->
     <!-- Invoice List Table -->
     <div class="overflow-x-auto">
       <table class="w-full border rounded-xl overflow-hidden">
@@ -133,26 +133,71 @@
           </tr>
         </thead>
         <tbody class="text-sm">
-
-          <!-- Example Row -->
-          @for (item of invoiced; track $index) {
+          @for (item of invoices; track $index) {
           <tr class="border-b hover:bg-gray-50">
             <td class="px-4 py-3">{{item.invoiceId}}</td>
             <td class="px-4 py-3">{{item.customerName}}</td>
-            <td class="px-4 py-3">{{item.date}}</td>
+            <td class="px-4 py-3">{{item.createdAt}}</td>
             <td class="px-4 py-3 font-semibold">GHC {{item.total}}</td>
-            <td class="px-4 py-3 flex gap-3">
-              <button command="show-modal" commandfor="dialogs"
-                class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10">View
+
+            <td class="px-4 py-3">
+              <button (click)="openModal(item)"
+                class="rounded-md bg-gray-900 text-white px-3 py-1.5 text-sm hover:bg-gray-700">
+                View
               </button>
             </td>
           </tr>
           }
-
-
         </tbody>
+
+        @if (showModal) {
+        <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <!-- MODAL BOX -->
+          <div class="bg-white w-[400px] rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Invoice Details</h2>
+
+            <div class="space-x-10 flex">
+              <p><strong>Invoice ID:</strong> {{selectedInvoice.invoiceId}}</p>
+              <p><strong>Customer:</strong> {{selectedInvoice.customerName}}</p>
+              <p><strong>Date:</strong> {{selectedInvoice.createdAt}}</p>
+              <p><strong>Total:</strong> GHC {{selectedInvoice.total}}</p>
+            </div>
+
+            <div class="space-y-3">
+              <table class="border rounded-xl overflow-hidden">
+                <thead class="bg-gray-100 text-sm text-gray-600 uppercase">
+                  <tr>
+                    <th class="px-4 py-3 text-left">Product Name</th>
+                    <th class="px-4 py-3 text-left">Quantity</th>
+                    <th class="px-4 py-3 text-left">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  @for (item of selectedInvoice.items; track item.productName) {
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-3">{{item.productName}}</td>
+                    <td class="px-4 py-3">{{item.quantity}}</td>
+                    <td class="px-4 py-3">{{item.productPrice}}</td>
+                  </tr>
+                  }
+
+                </tbody>
+              </table>
+
+              <p><strong>Total:</strong> GHC {{selectedInvoice.total}}</p>
+            </div>
+
+            <!-- CLOSE BUTTON -->
+            <div class="mt-6 text-right">
+              <button (click)="closeModal()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+        }
       </table>
     </div>
-
   </div>
 </div>

@@ -2,18 +2,20 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core
 import {
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Invoiced, InvoiceDto, InvoiceItemDto } from '../../Interfaces/invoice';
+import {
+  Invoiced,
+  InvoiceGetDto,
+  InvoiceItemGetDto,
+} from '../../Interfaces/invoice';
 import { Customer } from '../../Interfaces/customers';
 import { CustomerService } from '../../Services/customer-service';
 import { ProductServices } from '../../Services/ProductServices/product-services';
 import { ProductsInterface } from '../../Interfaces/products';
-import { Category } from '../../Interfaces/category';
 
 @Component({
   selector: 'app-invoices',
@@ -39,16 +41,13 @@ export class Invoices implements OnInit {
 
   url = 'http://localhost:5251/api/Invoice/add';
   url1 = 'http://localhost:5251/api/Invoice/new';
-  // get total(): number {
-  //   const qty = this.invoiceObj.get('quantity')?.value || 0;
-  //   const price = this.invoiceObj.get('amount')?.value || 0;
-  //   return qty * price;
-  // }
+
   productsList: ProductsInterface[] = [];
   customer: Customer[] = [];
   invoiced: Invoiced[] = [];
+  invoices: InvoiceGetDto[] = [];
+  invoiceds: InvoiceItemGetDto[] = [];
 
-  // Reactive form using FormBuilder
   invoiceForm: FormGroup = this.fb.group({
     customerId: ['', Validators.required],
     items: this.fb.array([]), // FormArray of line items
@@ -59,7 +58,8 @@ export class Invoices implements OnInit {
     this.allCustomers();
     this.getProd();
     this.getInvoice();
-    this.addItem(); // start with one row (optional)
+    this.getInvoices();
+    // this.addItem(); // start with one row (optional)
   }
 
   // Helper to access items FormArray
@@ -133,7 +133,20 @@ export class Invoices implements OnInit {
   // Load invoices
   getInvoice() {
     this.customerService.getInvoices().subscribe({
-      next: (value: Invoiced[]) => (this.invoiced = value),
+      next: (value: InvoiceGetDto[]) => {
+        this.invoices = value;
+        console.log('Value:', value);
+      },
+      error: (err) => console.log(err),
+    });
+  }
+
+  getInvoices() {
+    this.customerService.getInvoiced().subscribe({
+      next: (value: InvoiceItemGetDto[]) => {
+        this.invoiceds = value;
+        console.log('Value:', value);
+      },
       error: (err) => console.log(err),
     });
   }
@@ -160,5 +173,18 @@ export class Invoices implements OnInit {
       },
       error: (e) => console.error(e),
     });
+  }
+
+  showModal = false;
+  selectedInvoice: any = this.invoices;
+
+  openModal(item: any) {
+    this.selectedInvoice = item;
+    console.log(`selected invoice`, item.items);
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

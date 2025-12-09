@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Customer } from '../Interfaces/customers';
 import { Observable } from 'rxjs';
-import { Invoiced } from '../Interfaces/invoice';
+import { Invoiced, InvoiceGetDto, InvoiceItemGetDto } from '../Interfaces/invoice';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,11 @@ export class CustomerService {
 
   url4 = 'http://localhost:5251/api/Invoice/all';
 
-  getInvoices():Observable<Invoiced[]>{
-    return this.http.get<Invoiced[]>(this.url4);
+  getInvoices():Observable<InvoiceGetDto[]>{
+    return this.http.get<InvoiceGetDto[]>(this.url4);
+  }
+
+  getInvoiced():Observable<InvoiceItemGetDto[]>{
+    return this.http.get<InvoiceItemGetDto[]>(this.url4);
   }
 }

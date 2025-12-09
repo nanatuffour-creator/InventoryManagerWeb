@@ -12,17 +12,31 @@ export interface InvoiceDto {
   invoiceId: number;
   customerId: number;
   totalAmount: number;
-  createdAt: string; 
+  createdAt: string;
   items: InvoiceItemDto[];
 }
-
 
 export interface Invoiced {
   invoiceId: number;
   customerName: string;
-  date: string;        
+  createdAt: string;
   total: number;
   productName: string;
   quantity: number;
   sellingPrice: number;
+}
+
+export interface InvoiceGetDto {
+  invoiceId: number;
+  customerName: string;
+  total: number;
+  createdAt: string;
+  items: InvoiceItemGetDto[];
+}
+
+export interface InvoiceItemGetDto {
+  productName: string;
+  stock: number;
+  quantity: number;
+  productPrice: number;
 }

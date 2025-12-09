@@ -52,10 +52,9 @@ export class Products implements OnInit {
     this.productServices.getProducts().subscribe({
       next: (response: ProductsInterface[]) => {
         this.productsList = response;
-        console.log(response);
       },
       error: (err) => {
-        console.error(err);
+        alert(err);
       },
     });
   }
@@ -65,11 +64,11 @@ export class Products implements OnInit {
     console.log(this.editProducts);
     this.productServices.DeleteProduct(productName).subscribe({
       next: (value) => {
-        console.log(value);
         alert(`Product ${productName} deleted.`);
+        this.getProd();
       },
       error(err) {
-        console.log(err);
+        alert(err);
       },
     });
   }
@@ -81,7 +80,7 @@ export class Products implements OnInit {
         console.log(response);
       },
       error: (err) => {
-        console.error(err);
+        alert(err);
       },
     });
   }
@@ -101,11 +100,10 @@ export class Products implements OnInit {
 
     this.productServices.editProduct(dto).subscribe({
       next: (res) => {
-        console.log('Updated:', res);
-        alert("Product Edited Successfully")
+        alert('Product Edited Successfully');
         this.getProd();
       },
-      error: (err) => console.error('Error:', err),
+      error: (err) => alert(err),
     });
   }
 

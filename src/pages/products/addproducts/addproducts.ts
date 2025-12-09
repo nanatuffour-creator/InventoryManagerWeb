@@ -5,6 +5,7 @@ import { ProductServices } from '../../../Services/ProductServices/product-servi
 import { AddProduct } from '../../../Interfaces/add-product';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../../../Interfaces/user';
 
 @Component({
   selector: 'app-addproducts',
@@ -44,7 +45,9 @@ export class Addproducts implements OnInit {
   }
 
   addProduct() {
+    console.log();
     const results = this.addProducts.value;
+
     this.http.post(this.url, results).subscribe({
       next: (value) => {
         console.log(value);
@@ -56,4 +59,12 @@ export class Addproducts implements OnInit {
       },
     });
   }
+
+  user: User = {
+    Email: '',
+    Password: '',
+    FirstName: '',
+    LastName: '',
+    ConfirmPassword: '',
+  };
 }
