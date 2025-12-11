@@ -1,25 +1,24 @@
-<div class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-5xl mx-auto bg-white shadow-lg rounded-3xl p-6">
+<div class="min-h-screen bg-linear-to-br from-gray-100 to-gray-200 p-6">
+    <div class="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl shadow-2xl rounded-3xl p-8 border border-white/40">
 
         <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800">Suppliers</h2>
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-800 tracking-wide">Suppliers</h2>
             <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
                 onclick="document.getElementById('add-supplier').classList.toggle('hidden')">
                 + Add Supplier
             </button>
         </div>
-
         <!-- Add Supplier Form -->
-        <div id="add-supplier" class="bg-gray-50 p-5 rounded-xl shadow-md mb-8 hidden">
-            <h3 class="text-lg font-semibold mb-4 text-gray-700">Add Supplier</h3>
-
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div id="add-supplier"
+            class="bg-white/80 backdrop-blur-lg p-6 rounded-2xl shadow-xl border border-gray-200 mb-10 hidden">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Add Supplier</h3>
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Name -->
                 <div>
                     <label class="block text-sm text-gray-600 mb-1">Supplier Name</label>
                     <input type="text" placeholder="TechSource Ltd." [(ngModel)]="supplierObj.name" name="supplierName"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 placeholder:italic font-mono" />
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 shadow-sm placeholder:italic font-mono " />
                 </div>
 
                 <!-- Phone -->
@@ -61,15 +60,14 @@
                 <!-- Supplier Card -->
                 @for (item of suppliers; track $index) {
 
-                <div class="bg-white border rounded-xl p-4 shadow-sm hover:shadow-lg transition">
-                    <h4 class="text-gray-800 font-semibold">{{item.name}}</h4>
-                    <p class="text-sm text-gray-600">{{item.phone}}</p>
+                <div
+                    class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition transform">
+                    <h4 class="text-lg font-semibold text-gray-800">{{item.name}}</h4>
+                    <p class="text-sm text-gray-600 mt-1">{{item.phone}}</p>
                     <p class="text-sm text-gray-600">{{item.email}}</p>
                     <div class="flex justify-between mt-4">
-                        <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
-                        <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
                         <button command="show-modal" commandfor="dialog"
-                            class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"
+                            class="rounded-xl bg-indigo-50 px-3 py-1.5 text-sm font-semibold text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition"
                             (click)="editSupplier(item)">Edit
                         </button>
                         <el-dialog>

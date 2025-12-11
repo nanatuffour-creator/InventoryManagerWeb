@@ -1,4 +1,4 @@
-<div class="p-8 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen space-y-10">
+<div class="p-8 bg-linear-to-br from-emerald-50 via-white to-teal-50 min-h-screen space-y-10">
     <!-- Page Header -->
     <div class="flex flex-col gap-1">
         <h1 class="text-3xl font-bold text-gray-800">Purchases</h1>
@@ -10,8 +10,9 @@
         <div class="flex gap-3">
             <select class="px-4 py-2 rounded-xl bg-white shadow text-gray-700 border border-gray-200">
                 <option>Filter by Supplier</option>
-                <option>Supplier A</option>
-                <option>Supplier B</option>
+                @for (item of suppliers; track $index) {
+                <option>{{item.name}}</option>
+                }
             </select>
 
             <select class="px-4 py-2 rounded-xl bg-white shadow text-gray-700 border border-gray-200">
@@ -20,35 +21,155 @@
                 <option>Pending</option>
             </select>
         </div>
-
-        <button
-            class="px-5 py-2 bg-emerald-600 text-white font-semibold rounded-xl shadow hover:bg-emerald-700 transition duration-300">
-            + Add Purchase
+        <!-- class="px-5 py-2 bg-emerald-600 text-white font-semibold rounded-xl shadow hover:bg-emerald-700 transition duration-300" -->
+        <button command="show-modal" commandfor="dialog"
+            class="px-5 py-2 bg-emerald-600 text-white font-semibold rounded-xl shadow hover:bg-emerald-700 transition duration-300">Add
+            Purchase
         </button>
+        <el-dialog>
+            <dialog id="dialog" aria-labelledby="dialog-title"
+                class="fixed inset-0 size-auto max-h-auto max-w-auto overflow-y-auto bg-transparent backdrop:bg-transparent">
+                <el-dialog-backdrop
+                    class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+                <div tabindex="0"
+                    class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+                    <el-dialog-panel
+                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div
+                                    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                                    <div
+                                        class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl p-8 border border-gray-200">
+
+                                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Add Purchase</h2>
+
+                                        <form class="space-y-6">
+
+                                            <!-- Customer -->
+                                            <div>
+                                                <label class="text-sm font-medium text-gray-700">Supplier</label>
+                                                <select formControlName="customerId"
+                                                    class="w-full border px-3 py-2.5 rounded-xl shadow-sm bg-white focus:ring-2 focus:ring-indigo-500">
+                                                    <option value="" disabled>Select Supplier</option>
+
+                                                    @for (item of suppliers; track $index) {
+                                                    <option [value]="item.id">{{item.name}}</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <!-- Items Section -->
+                                            <div class="bg-gray-50 rounded-2xl p-5 shadow-inner border border-gray-200">
+                                                <h3 class="text-lg font-semibold text-gray-700 mb-4">Invoice Items</h3>
+
+                                                <div formArrayName="items">
+
+                                                    @for (item of items.controls; track item; let i = $index) {
+
+                                                    <div
+                                                        class="grid grid-cols-6 gap-4 bg-white p-5 rounded-2xl shadow-md border border-gray-100 mb-3">
+
+                                                        <!-- Product -->
+                                                        <div class="col-span-2">
+                                                            <label class="text-sm text-gray-600">Product</label>
+                                                            <select formControlName="productId"
+                                                                class="w-full border px-3 py-2.5 rounded-lg bg-white shadow-sm"
+                                                                (change)="updatePrice(i)">
+                                                                <option value="" disabled selected>Select product
+                                                                </option>
+
+                                                                @for (p of productsList; track p.productId) {
+                                                                <option [value]="p.productId">{{ p.productName }}
+                                                                </option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Qty -->
+                                                        <div>
+                                                            <label class="text-sm text-gray-600">Qty</label>
+                                                            <input type="number" formControlName="quantity"
+                                                                (input)="recalculateLine(i)"
+                                                                class="w-full border px-3 py-2.5 rounded-lg shadow-sm" />
+                                                        </div>
+
+                                                        <!-- Price -->
+                                                        <div>
+                                                            <label class="text-sm text-gray-600">Price</label>
+                                                            <input type="number" formControlName="sellingPrice"
+                                                                class="w-full border px-3 py-2.5 rounded-lg shadow-sm" />
+                                                        </div>
+
+                                                        <!-- Line Total -->
+                                                        <div class="flex flex-col justify-end">
+                                                            <span class="text-gray-600 text-sm">Total</span>
+                                                            <span class="font-semibold text-gray-900">
+                                                                GHC {{ item.get('lineTotal')?.value }}
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- Remove -->
+                                                        <div class="flex items-end justify-end">
+                                                            <button type="button" (click)="removeItem(i)"
+                                                                class="text-red-600 hover:text-red-700 font-medium hover:underline">
+                                                                Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <button type="button" (click)="addItem()"
+                                                class="mt-2 text-indigo-600 hover:underline font-medium">
+                                                + Add Item
+                                            </button>
+                                            <!-- Final Total -->
+                                            <div class="flex justify-between text-xl font-semibold text-gray-800 pt-3">
+                                                <span>Total Amount:</span>
+                                                <span>GHC </span>
+                                            </div>
+                                        </form>
+                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                            <button type="button" command="close" commandfor="dialog"
+                                                class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs sm:ml-3 sm:w-auto  bg-emerald-600 hover:bg-emerald-700 transition duration-300">Add</button>
+                                            <button type="button" command="close" commandfor="dialog"
+                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </el-dialog-panel>
+                </div>
+            </dialog>
+        </el-dialog>
+
     </div>
 
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div
-            class="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
+            class="bg-linear-to-br from-emerald-500 to-emerald-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
             <p class="text-sm text-emerald-100">Total Purchases</p>
             <h2 class="text-3xl font-bold mt-1">GHC 24,580</h2>
         </div>
 
         <div
-            class="bg-gradient-to-br from-teal-500 to-teal-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
+            class="bg-linear-to-br from-teal-500 to-teal-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
             <p class="text-sm text-teal-100">Suppliers</p>
-            <h2 class="text-3xl font-bold mt-1">18</h2>
+            <h2 class="text-3xl font-bold mt-1">{{suppliers.length}}</h2>
         </div>
 
         <div
-            class="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
+            class="bg-linear-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
             <p class="text-sm text-blue-100">Pending Orders</p>
             <h2 class="text-3xl font-bold mt-1">6</h2>
         </div>
 
         <div
-            class="bg-gradient-to-br from-amber-500 to-amber-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
+            class="bg-linear-to-br from-amber-500 to-amber-700 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300">
             <p class="text-sm text-amber-100">Completed Today</p>
             <h2 class="text-3xl font-bold mt-1">3</h2>
         </div>

@@ -24,7 +24,6 @@ export class Login {
   verifyUser() {
     this.userService.verifyUser(this.user).subscribe({
       next: (result) => {
-        console.log(result);
         alert('Login Sucessful');
         this.router.navigate(['/layout/dashboard']);
       },
