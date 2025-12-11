@@ -21,17 +21,4 @@ export enum PurchaseStatus {
   Delayed    
 }
 
-export interface GetPurchaseOrdersDto {
-  productName?: string;   
-  costPrice: number;
-  quantity: number;
-}
 
-export interface GetPurchaseDto {
-  purchaseId: number;
-  supplierName?: string;  
-  amount: number;
-  date: string;           
-  stat: number;           
-  purchaseOrders?: GetPurchaseOrdersDto[];
-}
