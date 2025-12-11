@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-=======
-export interface Purchases {
+export interface Purchase {
   purchaseId: number;
   id: number;
   amount: number;
   date: string; // ISO date string e.g. "2025-12-11"
-  stat: number;
+  stat?: Status;
   purchaseOrders: PurchaseOrder[];
 }
 
@@ -17,22 +15,8 @@ export interface PurchaseOrder {
   productId: number;
 }
 
-export enum PurchaseStatus {
-  Completed, 
-  Pending,   
-  Delayed    
+export enum Status {
+  Completed, // 0
+  Pending, // 1
+  Delayed, // 2
 }
-
-
-<<<<<<< HEAD
-export interface GetPurchaseDto {
-  purchaseId: number;
-  supplierName?: string;  
-  amount: number;
-  date: string;           
-  stat: number;           
-  purchaseOrders?: GetPurchaseOrdersDto[];
-}
->>>>>>> e093b17967726acafb8be3632c8fe772e6822507
-=======
->>>>>>> 3e5600d5dbe0c41ae754f73ac8894703207b1d62
