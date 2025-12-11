@@ -16,7 +16,22 @@ export interface PurchaseOrder {
 }
 
 export enum PurchaseStatus {
-  Completed, // 0
-  Pending,   // 1
-  Delayed    // 2
+  Completed, 
+  Pending,   
+  Delayed    
+}
+
+export interface GetPurchaseOrdersDto {
+  productName?: string;   
+  costPrice: number;
+  quantity: number;
+}
+
+export interface GetPurchaseDto {
+  purchaseId: number;
+  supplierName?: string;  
+  amount: number;
+  date: string;           
+  stat: number;           
+  purchaseOrders?: GetPurchaseOrdersDto[];
 }
