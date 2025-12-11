@@ -15,8 +15,10 @@ export interface PurchaseOrder {
   productId: number;
 }
 
-export enum Status {
-  Completed, // 0
-  Pending, // 1
-  Delayed, // 2
+export enum PurchaseStatus {
+  Completed, 
+  Pending,   
+  Delayed    
 }
+
+
