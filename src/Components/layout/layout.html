@@ -2,23 +2,35 @@
 
   <!-- Sidebar -->
   <aside
-    class="w-64 bg-white border-r border-gray-200 flex flex-col fixed top-0 left-0 h-screen p-6 z-40 transform transition-transform duration-300 md:translate-x-0 -translate-x-full"
+    class="w-64  bg-white border-r border-gray-200 flex flex-col fixed top-0 left-0 h-screen p-6 z-40 transform transition-transform duration-300 md:translate-x-0 -translate-x-full"
     [class.translate-x-0]="sidebarOpen">
     <!-- Logo -->
-    <div class="mb-8">
+    <button (click)="toggleSidebar()" class="p-2 mb-4 rounded-lg hover:bg-gray-100 transition self-start"
+      aria-label="Toggle sidebar" type="button">
+
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- Logo (hide when collapsed but preserve DOM) -->
+    <div class="mb-8" [class.hidden]="isCollapsed">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png" class="w-full h-12 object-contain"
         alt="Logo" />
     </div>
 
     <!-- Navigation -->
     <nav class="flex-1 space-y-2 overflow-y-auto">
-      <a (click)="viewDashboard()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewDashboard()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img src="https://cdn-icons-png.flaticon.com/512/1828/1828859.png" class="w-6 h-6" alt="Dashboard" />
         Dashboard
       </a>
 
-      <a (click)="viewProducts()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewProducts()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img
           src="data:image/png;base64,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"
@@ -26,19 +38,22 @@
         Products
       </a>
 
-      <a (click)="viewCustomers()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewCustomers()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" class="w-6 h-6" alt="Customers" />
         Customers
       </a>
 
-      <a (click)="viewSuppliers()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewSuppliers()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" class="w-6 h-6" alt="Suppliers" />
         Suppliers
       </a>
 
-      <a (click)="viewCategories()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewCategories()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAclBMVEX///8AAAC3t7etra2KioqWlpbV1dWysrK9vb3u7u7z8/Pi4uLLy8v39/fW1tbKysp/f38wMDBwcHA5OTkiIiJUVFRhYWHp6ek0NDSamppjY2NpaWmPj4/c3Nw+Pj4UFBQoKChGRkYbGxsMDAxFRUVPT0+B8gOwAAAFvUlEQVR4nO2d63aqMBBGpVUrilfq/Va1ff9XPO0igSmXJJPM0eL69k+EjJuEICQTOx0AAAAAAAAAAAB80x+8+DHo/7koVeJtGoWw2a4doqy3m6Ao6Tb29BstggJnLI6WKEeRKCMfwYNA5B+6xihdoSg9tt/wSyh0FJ2aG1H8KRblMuQJrq9ioaPo1tSGRjfBKFeXaz5nKCkYRef6WozPolGunFq8kAOXs64PsyUpI62NkgpH+XIXLDqZVcI4L2WSXV5OXXdTdDK7oCirvBzn7makjziHRP6h/66Lqt40jvqj97Cb9rdj3tpdbxr6DrXxvZMWDE+qrH3lo7365MTsBGuI9U+GheP+ugbDBb8VdS2We7q1rsFwQdJnuX3lrdo7tIlm9FVph9J2fa2HNtGMRJW2ddpbdXErkdB5a5yXNs+bWq8fqrup77TLiFZhUYnjX1vHautEKIquRM43EgrdcMY434gTxeWMDbJdl2KxVQN6+7XxTfZS6HTUrX/gsOtLtutMLLa6s7/+2viabTQ/eHCYZQW+OOz6Ih27ZzDkP/Q00YVhAQzZwFAGGBJgyAaGMsCQAEM2MJQBhgQYsoGhDDAkwJANDGWAIQGGbGAoAwwJMGQDQxlgSIAhGxjKAEMCDNnAUAYYEmDIBoYywJAAQzYwlAGGBBiygaEMMCTAkA0MZeAbPvFc/efPt7hPzsz0P0VxShSr/Ub+TFR5fyfvqaPSFXdCsVW+5kdp80e22TEn0gord03nH8pkBuoqbMo/lKlEXv6haHbnWOUZVlJ0dbLxfFx7HI88U9Ux7VXnAQtk6I4vUVOb14nen+GKebaxa5uXy7Ke6BqsaYy6+Ubz0IZqyhhvoMiU34c4ToplS+p+P8zyTxchjv19Xg7j98MpKlh1ez50V6SMchJwxlw4yifjvMSSS3JE0a1+UY61/UgOZ1a3MRJdlKPp8jhKnsgzcxWe+GQv05F587Iq67D1kygpf30EqdV/zA8pM3sBTng9pBz39oKt7Gzd5GRnL8TK3vk2UWLdm9tLN/BxcLk2RoePoCjzHmt1oTLj5O3Vj7fE/cfKfaIAAAAAAAAAHkfAr/4p49li+qBni/WhFc+HB9/nQ5lnfNsL1/7jnvGf/T3Nnd61hV0FFO67tju9L5UMwntfKvzOu7I8q6pB2SA3Ti22c9zi5C5Ixp5CRoXcx558X3f+4DP2JDd+eDSMH+o5H48YP7zvGPDl/mPAzz+Of9+5GCGXYIFu8m5zMVo5n0a1+YesBW2eEyVThX9xLehHzmt7/rmJzz+/9K/NEU6+3pcOba+9s6AHjt1eew3njneB9hq69rkwJMCQDQzNwFADQwIM2cDQDAw1MCTAkA0MzcBQA0MCDNnA0MwzGQ640xY2U3J0CwyTqoIVMrbaAkOfvzongwItMHyvClghr1FbYLisClgh/0TbAsN+VcAKGX1sgWEnSasKRk50wKYNhvUoG+t+MCTAkA0MzcBQA0MCDNnA0AwMNTAkwJANDM3AUANDAgzZwNDM8xtmuRH2pK32GmaT+u3ToNtr2Jms0p1DVgbWgiY8f77FfXJmWCsbM6I45TLWfiN/9Bmrz3uSSZBjZhmlsg1IJbGWU4HVgO++9hg+qpG6pQLr/EOZStRVWO41df6hTCXqKnTLP4zV3mf+eplV8uzOcsK6aKZqrJcPYK4FvQlXzDN0q61Rp2ALZBvHehlU13xNnaIbnUMbqinLWi5jPMnXR3BeVqGnj4hWIY5JsRxA3Z29yPrfhUSZFsPjjH/LoPMilrOuDzM6Ll/fxaXCUb4Y52V4jSRp6LNi0eVFoisr730tqXhrujxEV1C5MlcaGvpM4KnH0FkOL2JRPJZm6NlLdcL8+CC1kpHXX/KMFvaCrViXLZGJwlytPCfecqe4/CbduvxmiLdh65afnKI0Mxm8+DHg3Mj73lGk/qgGAAAAAAAAAABoOf8A/EljQzie9dsAAAAASUVORK5CYII="
@@ -46,13 +61,15 @@
         Categories
       </a>
 
-      <a (click)="viewInvoices()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewInvoices()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img src="https://cdn-icons-png.flaticon.com/512/2910/2910762.png" class="w-6 h-6" alt="Invoices" />
         Invoices
       </a>
 
-      <a (click)="viewPurchases()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewPurchases()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
         <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" class="w-6 h-6" alt="Purchases" />
         Purchases
@@ -61,7 +78,8 @@
 
     <!-- Register -->
     <div class="mt-auto">
-      <a (click)="viewRegister()" routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
+      <a (click)="viewRegister()" [class.hidden]="isCollapsed"
+        routerLinkActive="bg-indigo-50 text-indigo-600 font-medium"
         class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition">
         <img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png" class="w-6 h-6" alt="Register" />
         Register
@@ -71,30 +89,9 @@
 
   <!-- Page Content -->
   <main class="flex-1 flex flex-col md:ml-64">
-    <!-- Topbar -->
-    <header
-      class="h-16 bg-white p-4 fixed top-0 left-0 md:left-64 right-0 z-30 flex items-center justify-between border-b-0 shadow-sm">
-      <!-- Mobile menu button -->
-      <button class="md:hidden p-2 rounded-md hover:bg-gray-100 transition" (click)="sidebarOpen = !sidebarOpen">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-
-      <div class="flex items-center gap-4">
-        <button class="h-10 w-10 rounded-full overflow-hidden shadow">
-          <img src="https://i.pravatar.cc/100?img=32" class="object-cover w-full h-full" />
-        </button>
-
-        <span class="font-medium text-gray-800 hidden sm:block">Tom Cook</span>
-      </div>
-    </header>
-
     <!-- Main scrollable area -->
-    <section class="mt-16 p-6 h-[calc(100vh-4rem)] overflow-y-auto bg-gray-50">
+    <section class="mt-4 p-2 h-[calc(100vh-4rem)] overflow-y-auto bg-gray-50">
       <router-outlet></router-outlet>
     </section>
   </main>
-
 </div>

@@ -5,7 +5,8 @@ import { ProductServices } from '../../Services/ProductServices/product-services
 import { CustomerService } from '../../Services/customer-service';
 import { ProductsInterface } from '../../Interfaces/products';
 import { FormArray, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { Purchase, Status } from '../../Interfaces/purchases';
+import { GetPurchaseDto, Purchase, Status } from '../../Interfaces/purchases';
+import { PurchaseService } from '../../Services/purchase-service';
 
 @Component({
   selector: 'app-purchases',
@@ -20,8 +21,44 @@ export class Purchases implements OnInit {
   ngOnInit(): void {
     this.getSupplier();
     this.getProd();
-    this.getPurchase();
+    this.getPurchases();
+    this.getCompletedPurchases();
+    this.getPendingPurchases();
+    this.getTotalAmountOfPurchases();
+    this.getCompletedPurchase();
+    this.getPendingPurchase();
+    this.getDelayedPurchase();
   }
+
+  onSelectedChange(event: Event) {
+    const selected = event.target as HTMLSelectElement;
+    if (selected.value === 'all') {
+      this.changeAllPurchase();
+    } else if (selected.value === 'completed') {
+      this.changeCompletedPurchase();
+    } else if (selected.value === 'pending') {
+      this.changePendingPurchase();
+    } else if (selected.value === 'delayed') {
+      this.changeDelayedPurchase();
+    }
+  }
+  alls: boolean = true;
+  change: boolean = true;
+  changes: boolean = true;
+  changed: boolean = true;
+  changeAllPurchase() {
+    this.alls = !this.alls;
+  }
+  changeCompletedPurchase() {
+    this.change = !this.change;
+  }
+  changePendingPurchase() {
+    this.changes = !this.changes;
+  }
+  changeDelayedPurchase() {
+    this.changed = !this.changed;
+  }
+
   today = new Date().toISOString().split('T')[0];
   purchased: Purchase = {
     purchaseId: 0,
@@ -39,11 +76,33 @@ export class Purchases implements OnInit {
       },
     ],
   };
-
+  public readonly Stat = Status;
   Status = Status;
   url = 'http://localhost:5251/api/Purchase/add';
-  url1 = 'http://localhost:5251/api/Purchase/all';
-
+  completedPurchase: GetPurchaseDto[] = [];
+  getCompletedPurchase() {
+    this.purchaseService.getCompletedPurchase().subscribe({
+      next: (value: GetPurchaseDto[]) => {
+        this.completedPurchase = value;
+      },
+    });
+  }
+  pendingPurchase: GetPurchaseDto[] = [];
+  delayedPurchase: GetPurchaseDto[] = [];
+  getPendingPurchase() {
+    this.purchaseService.getPendingPurchase().subscribe({
+      next: (value: GetPurchaseDto[]) => {
+        this.pendingPurchase = value;
+      },
+    });
+  }
+  getDelayedPurchase() {
+    this.purchaseService.getDelayedPurchase().subscribe({
+      next: (value: GetPurchaseDto[]) => {
+        this.delayedPurchase = value;
+      },
+    });
+  }
   addPurchase() {
     // debugger
     this.customerService.http.post(this.url, this.purchased).subscribe({
@@ -58,19 +117,42 @@ export class Purchases implements OnInit {
       },
     });
   }
-  allpurchases: any;
-  getPurchase() {
-    this.customerService.http.get(this.url1).subscribe({
-      next: (value) => {
-        this.allpurchases = value;
-        console.log(value);
+  allpurchases: GetPurchaseDto[] = [];
+  getPurchases() {
+    this.purchaseService.getPurchase().subscribe({
+      next: (response: GetPurchaseDto[]) => {
+        this.allpurchases = response;
+        console.log(response);
       },
       error(err) {
         console.log(err);
       },
     });
   }
-
+  completed: any;
+  getCompletedPurchases() {
+    this.customerService.http.get('http://localhost:5251/api/Purchase/completed').subscribe({
+      next: (value) => {
+        this.completed = value;
+      },
+    });
+  }
+  pending: any;
+  getPendingPurchases() {
+    this.customerService.http.get('http://localhost:5251/api/Purchase/pending').subscribe({
+      next: (value) => {
+        this.pending = value;
+      },
+    });
+  }
+  totalAmount: any;
+  getTotalAmountOfPurchases() {
+    this.customerService.http.get('http://localhost:5251/api/Purchase/total').subscribe({
+      next: (value) => {
+        this.totalAmount = value;
+      },
+    });
+  }
   getSupplier() {
     this.supplierService.getSuppliers().subscribe({
       next: (value: Supplier[]) => {
@@ -84,7 +166,7 @@ export class Purchases implements OnInit {
   }
   private productServices = inject(ProductServices);
   private customerService = inject(CustomerService);
-
+  private purchaseService = inject(PurchaseService);
   productsList: ProductsInterface[] = [];
 
   getProd() {

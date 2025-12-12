@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from "@angular/router";
-
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -11,30 +10,34 @@ import { Router, RouterOutlet } from "@angular/router";
 export class Layout {
   constructor(public router: Router) {}
   sidebarOpen = false;
+  isCollapsed: boolean = false;
 
-  viewDashboard(){
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+  viewDashboard() {
     this.router.navigate(['/layout/dashboard']);
   }
-  viewProducts(){
+  viewProducts() {
     this.router.navigate(['/layout/products']);
   }
-  viewCustomers(){
+  viewCustomers() {
     this.router.navigate(['/layout/customers']);
   }
-  viewSuppliers(){
+  viewSuppliers() {
     this.router.navigate(['/layout/suppliers']);
   }
-  viewCategories(){
+  viewCategories() {
     this.router.navigate(['/layout/categories']);
   }
-  viewInvoices(){
+  viewInvoices() {
     this.router.navigate(['/layout/invoices']);
   }
-  viewPurchases(){
+  viewPurchases() {
     this.router.navigate(['/layout/purchases']);
   }
-  
-  viewRegister(){
+
+  viewRegister() {
     this.router.navigate(['/register']);
   }
 }
