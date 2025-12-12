@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Customer } from '../Interfaces/customers';
 import { Observable } from 'rxjs';
 import { Invoiced, InvoiceGetDto, InvoiceItemGetDto } from '../Interfaces/invoice';
+import { GetPurchaseDto } from '../Interfaces/purchases';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +28,9 @@ export class CustomerService {
 
   getInvoiced():Observable<InvoiceItemGetDto[]>{
     return this.http.get<InvoiceItemGetDto[]>(this.url4);
+  }
+
+  getPur():Observable<GetPurchaseDto[]>{
+    return this.http.get<GetPurchaseDto[]>('http://localhost:5251/api/Purchase/all');
   }
 }

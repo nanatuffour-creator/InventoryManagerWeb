@@ -7,21 +7,28 @@
 
     <!-- Top Actions -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div class="flex gap-3">
-            <select (change)="onSelectedChange($event)"
-                class="px-4 py-2 rounded-xl bg-white shadow text-gray-700 border border-gray-200">
-                <option>Status</option>
-                <option value="all">All</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="delayed">Delayed</option>
-            </select>
+        <div class="flex items-center justify-between w-full">
+
+            <!-- Left Side -->
+            <div class="flex">
+                <select (change)="onSelectedChange($event)"
+                    class="px-4 py-2 rounded-xl bg-white shadow text-gray-700 border border-gray-200">
+                    <option>Status</option>
+                    <option value="all">All</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="delayed">Delayed</option>
+                </select>
+            </div>
+
+            <!-- Right Side -->
+            <button command="show-modal" commandfor="dialog"
+                class="px-5 py-2 bg-emerald-600 text-white font-semibold rounded-xl shadow hover:bg-emerald-700 transition duration-300">
+                Add Purchase
+            </button>
+
         </div>
-        <!-- class="px-5 py-2 bg-emerald-600 text-white font-semibold rounded-xl shadow hover:bg-emerald-700 transition duration-300" -->
-        <button command="show-modal" commandfor="dialog"
-            class="px-5 py-2 bg-emerald-600 text-white font-semibold rounded-xl shadow hover:bg-emerald-700 transition duration-300">Add
-            Purchase
-        </button>
+
         <el-dialog>
             <dialog id="dialog" aria-labelledby="dialog-title"
                 class="fixed inset-0 size-auto max-h-auto max-w-auto overflow-y-auto bg-transparent backdrop:bg-transparent">
@@ -250,104 +257,10 @@
                     </td>
                     }
                     <td class="py-3 text-center">
-                        <button command="show-modal" commandfor="dialogs"
-                            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700">View</button>
-                        <el-dialog>
-                            <dialog id="dialogs" aria-labelledby="dialog-title"
-                                class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                <el-dialog-backdrop
-                                    class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                <div tabindex="0"
-                                    class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                            <div class="sm:flex sm:items-start">
-                                                <div class="p-6 max-w-5xl mx-auto bg-white shadow-xl rounded-3xl">
-                                                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Purchase Details
-                                                    </h2>
-
-                                                    <!-- PURCHASE SUMMARY -->
-                                                    <div
-                                                        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-xl border">
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Purchase ID</p>
-                                                            <p class="font-semibold text-lg">{{item.purchaseId}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">SupplierName</p>
-                                                            <p class="font-semibold text-lg">{{item.supplierName}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Status</p>
-                                                            <span
-                                                                class="px-3 py-1 rounded-lg text-sm font-semibold bg-green-200">
-                                                                Completed
-                                                            </span>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Date</p>
-                                                            <p class="font-semibold text-lg">{{item.date}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Grand Total</p>
-                                                            <p class="font-semibold text-lg text-green-600">GHS
-                                                                {{item.amount}}</p>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <!-- PURCHASE ORDERS -->
-                                                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Purchase Orders
-                                                    </h3>
-
-                                                    <div class="overflow-x-auto">
-                                                        <table
-                                                            class="w-full text-left border rounded-xl overflow-hidden">
-                                                            <thead class="bg-gray-200 text-gray-700">
-                                                                <tr>
-                                                                    <th class="p-3 font-semibold">Product ID</th>
-                                                                    <th class="p-3 font-semibold">Cost Price</th>
-                                                                    <th class="p-3 font-semibold">Quantity</th>
-                                                                    <th class="p-3 font-semibold">Total</th>
-                                                                </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                                @for (item of allpurchases; track item.purchaseOrders)
-                                                                {
-                                                                <tr class="border-b hover:bg-gray-50">
-                                                                    <td class="p-3"></td>
-                                                                    <td class="p-3">GHS 40</td>
-                                                                    <td class="p-3">3</td>
-                                                                    <td class="p-3 font-semibold text-green-600">GHS 120
-                                                                    </td>
-                                                                </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="button" command="close" commandfor="dialogs"
-                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                </div>
-                            </dialog>
-                        </el-dialog>
-
+                        <button (click)="openModal(item)"
+                            class="rounded-md bg-gray-900 text-white px-3 py-1.5 text-sm hover:bg-gray-700">
+                            View
+                        </button>
                     </td>
                 </tr>
                 }
@@ -375,104 +288,10 @@
                     </td>
                     }
                     <td class="py-3 text-center">
-                        <button command="show-modal" commandfor="dialogs"
-                            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700">View</button>
-                        <el-dialog>
-                            <dialog id="dialogs" aria-labelledby="dialog-title"
-                                class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                <el-dialog-backdrop
-                                    class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                <div tabindex="0"
-                                    class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                            <div class="sm:flex sm:items-start">
-                                                <div class="p-6 max-w-5xl mx-auto bg-white shadow-xl rounded-3xl">
-                                                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Purchase Details
-                                                    </h2>
-
-                                                    <!-- PURCHASE SUMMARY -->
-                                                    <div
-                                                        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-xl border">
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Purchase ID</p>
-                                                            <p class="font-semibold text-lg">{{item.purchaseId}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">SupplierName</p>
-                                                            <p class="font-semibold text-lg">{{item.supplierName}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Status</p>
-                                                            <span
-                                                                class="px-3 py-1 rounded-lg text-sm font-semibold bg-green-200">
-                                                                Completed
-                                                            </span>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Date</p>
-                                                            <p class="font-semibold text-lg">{{item.date}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Grand Total</p>
-                                                            <p class="font-semibold text-lg text-green-600">GHS
-                                                                {{item.amount}}</p>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <!-- PURCHASE ORDERS -->
-                                                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Purchase Orders
-                                                    </h3>
-
-                                                    <div class="overflow-x-auto">
-                                                        <table
-                                                            class="w-full text-left border rounded-xl overflow-hidden">
-                                                            <thead class="bg-gray-200 text-gray-700">
-                                                                <tr>
-                                                                    <th class="p-3 font-semibold">Product ID</th>
-                                                                    <th class="p-3 font-semibold">Cost Price</th>
-                                                                    <th class="p-3 font-semibold">Quantity</th>
-                                                                    <th class="p-3 font-semibold">Total</th>
-                                                                </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                                @for (item of allpurchases; track item.purchaseOrders)
-                                                                {
-                                                                <tr class="border-b hover:bg-gray-50">
-                                                                    <td class="p-3"></td>
-                                                                    <td class="p-3">GHS 40</td>
-                                                                    <td class="p-3">3</td>
-                                                                    <td class="p-3 font-semibold text-green-600">GHS 120
-                                                                    </td>
-                                                                </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="button" command="close" commandfor="dialogs"
-                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                </div>
-                            </dialog>
-                        </el-dialog>
-
+                        <button (click)="openModal(item)"
+                            class="rounded-md bg-gray-900 text-white px-3 py-1.5 text-sm hover:bg-gray-700">
+                            View
+                        </button>
                     </td>
                 </tr>
                 }
@@ -499,104 +318,10 @@
                     </td>
                     }
                     <td class="py-3 text-center">
-                        <button command="show-modal" commandfor="dialogs"
-                            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700">View</button>
-                        <el-dialog>
-                            <dialog id="dialogs" aria-labelledby="dialog-title"
-                                class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                <el-dialog-backdrop
-                                    class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                <div tabindex="0"
-                                    class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                            <div class="sm:flex sm:items-start">
-                                                <div class="p-6 max-w-5xl mx-auto bg-white shadow-xl rounded-3xl">
-                                                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Purchase Details
-                                                    </h2>
-
-                                                    <!-- PURCHASE SUMMARY -->
-                                                    <div
-                                                        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-xl border">
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Purchase ID</p>
-                                                            <p class="font-semibold text-lg">{{item.purchaseId}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">SupplierName</p>
-                                                            <p class="font-semibold text-lg">{{item.supplierName}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Status</p>
-                                                            <span
-                                                                class="px-3 py-1 rounded-lg text-sm font-semibold bg-green-200">
-                                                                Completed
-                                                            </span>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Date</p>
-                                                            <p class="font-semibold text-lg">{{item.date}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Grand Total</p>
-                                                            <p class="font-semibold text-lg text-green-600">GHS
-                                                                {{item.amount}}</p>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <!-- PURCHASE ORDERS -->
-                                                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Purchase Orders
-                                                    </h3>
-
-                                                    <div class="overflow-x-auto">
-                                                        <table
-                                                            class="w-full text-left border rounded-xl overflow-hidden">
-                                                            <thead class="bg-gray-200 text-gray-700">
-                                                                <tr>
-                                                                    <th class="p-3 font-semibold">Product ID</th>
-                                                                    <th class="p-3 font-semibold">Cost Price</th>
-                                                                    <th class="p-3 font-semibold">Quantity</th>
-                                                                    <th class="p-3 font-semibold">Total</th>
-                                                                </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                                @for (item of allpurchases; track item.purchaseOrders)
-                                                                {
-                                                                <tr class="border-b hover:bg-gray-50">
-                                                                    <td class="p-3"></td>
-                                                                    <td class="p-3">GHS 40</td>
-                                                                    <td class="p-3">3</td>
-                                                                    <td class="p-3 font-semibold text-green-600">GHS 120
-                                                                    </td>
-                                                                </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="button" command="close" commandfor="dialogs"
-                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                </div>
-                            </dialog>
-                        </el-dialog>
-
+                        <button (click)="openModal(item)"
+                            class="rounded-md bg-gray-900 text-white px-3 py-1.5 text-sm hover:bg-gray-700">
+                            View
+                        </button>
                     </td>
                 </tr>
                 }
@@ -624,103 +349,10 @@
                     </td>
                     }
                     <td class="py-3 text-center">
-                        <button command="show-modal" commandfor="dialogs"
-                            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700">View</button>
-                        <el-dialog>
-                            <dialog id="dialogs" aria-labelledby="dialog-title"
-                                class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                <el-dialog-backdrop
-                                    class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                <div tabindex="0"
-                                    class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                            <div class="sm:flex sm:items-start">
-                                                <div class="p-6 max-w-5xl mx-auto bg-white shadow-xl rounded-3xl">
-                                                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Purchase Details
-                                                    </h2>
-
-                                                    <!-- PURCHASE SUMMARY -->
-                                                    <div
-                                                        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-xl border">
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Purchase ID</p>
-                                                            <p class="font-semibold text-lg">{{item.purchaseId}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">SupplierName</p>
-                                                            <p class="font-semibold text-lg">{{item.supplierName}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Status</p>
-                                                            <span
-                                                                class="px-3 py-1 rounded-lg text-sm font-semibold bg-green-200">
-                                                                Completed
-                                                            </span>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Date</p>
-                                                            <p class="font-semibold text-lg">{{item.date}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Grand Total</p>
-                                                            <p class="font-semibold text-lg text-green-600">GHS
-                                                                {{item.amount}}</p>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <!-- PURCHASE ORDERS -->
-                                                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Purchase Orders
-                                                    </h3>
-
-                                                    <div class="overflow-x-auto">
-                                                        <table
-                                                            class="w-full text-left border rounded-xl overflow-hidden">
-                                                            <thead class="bg-gray-200 text-gray-700">
-                                                                <tr>
-                                                                    <th class="p-3 font-semibold">Product ID</th>
-                                                                    <th class="p-3 font-semibold">Cost Price</th>
-                                                                    <th class="p-3 font-semibold">Quantity</th>
-                                                                    <th class="p-3 font-semibold">Total</th>
-                                                                </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                                
-                                                                <tr class="border-b hover:bg-gray-50">
-                                                                    <td class="p-3"></td>
-                                                                    <td class="p-3">GHS 40</td>
-                                                                    <td class="p-3">3</td>
-                                                                    <td class="p-3 font-semibold text-green-600">GHS 120
-                                                                    </td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="button" command="close" commandfor="dialogs"
-                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                </div>
-                            </dialog>
-                        </el-dialog>
-
+                        <button (click)="openModal(item)"
+                            class="rounded-md bg-gray-900 text-white px-3 py-1.5 text-sm hover:bg-gray-700">
+                            View
+                        </button>
                     </td>
                 </tr>
                 }}@else {
@@ -746,109 +378,67 @@
                     </td>
                     }
                     <td class="py-3 text-center">
-                        <button command="show-modal" commandfor="dialogs"
-                            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700">View</button>
-                        <el-dialog>
-                            <dialog id="dialogs" aria-labelledby="dialog-title"
-                                class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                <el-dialog-backdrop
-                                    class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                <div tabindex="0"
-                                    class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                            <div class="sm:flex sm:items-start">
-                                                <div class="p-6 max-w-5xl mx-auto bg-white shadow-xl rounded-3xl">
-                                                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Purchase Details
-                                                    </h2>
-
-                                                    <!-- PURCHASE SUMMARY -->
-                                                    <div
-                                                        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-xl border">
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Purchase ID</p>
-                                                            <p class="font-semibold text-lg">{{item.purchaseId}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">SupplierName</p>
-                                                            <p class="font-semibold text-lg">{{item.supplierName}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Status</p>
-                                                            <span
-                                                                class="px-3 py-1 rounded-lg text-sm font-semibold bg-green-200">
-                                                                Completed
-                                                            </span>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Date</p>
-                                                            <p class="font-semibold text-lg">{{item.date}}</p>
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="text-gray-500 text-sm">Grand Total</p>
-                                                            <p class="font-semibold text-lg text-green-600">GHS
-                                                                {{item.amount}}</p>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <!-- PURCHASE ORDERS -->
-                                                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Purchase Orders
-                                                    </h3>
-
-                                                    <div class="overflow-x-auto">
-                                                        <table
-                                                            class="w-full text-left border rounded-xl overflow-hidden">
-                                                            <thead class="bg-gray-200 text-gray-700">
-                                                                <tr>
-                                                                    <th class="p-3 font-semibold">Product ID</th>
-                                                                    <th class="p-3 font-semibold">Cost Price</th>
-                                                                    <th class="p-3 font-semibold">Quantity</th>
-                                                                    <th class="p-3 font-semibold">Total</th>
-                                                                </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                                @for (item of allpurchases; track item.purchaseOrders)
-                                                                {
-                                                                <tr class="border-b hover:bg-gray-50">
-                                                                    <td class="p-3"></td>
-                                                                    <td class="p-3">GHS 40</td>
-                                                                    <td class="p-3">3</td>
-                                                                    <td class="p-3 font-semibold text-green-600">GHS 120
-                                                                    </td>
-                                                                </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="button" command="close" commandfor="dialogs"
-                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                </div>
-                            </dialog>
-                        </el-dialog>
-
+                        <button (click)="openModal(item)"
+                            class="rounded-md bg-gray-900 text-white px-3 py-1.5 text-sm hover:bg-gray-700">
+                            View
+                        </button>
                     </td>
                 </tr>
                 }
                 }
             </tbody>
+            @if (showModal)
+            {
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+                <div class="bg-white w-[420px] rounded-2xl shadow-2xl p-6 border border-gray-200">
+
+                    <h2 class="text-xl font-bold mb-5">Invoice Details</h2>
+
+                    <div class="grid grid-cols-1 gap-2 mb-4 text-sm">
+                        <p><strong>Purchase ID:</strong> {{selectedInvoice.purchaseId}}</p>
+                        <p><strong>Supplier Name:</strong> {{selectedInvoice.supplierName}}</p>
+                        <p><strong>Date:</strong> {{selectedInvoice.date}}</p>
+                        <p><strong>Total:</strong> GHC {{selectedInvoice.amount}}</p>
+                        @if (selectedInvoice.stat == 0) {
+                        <p><strong>Status:</strong> Completed</p>
+                        }
+                        @else if (selectedInvoice.stat == 1) {
+                        <p><strong>Status:</strong> Pending</p>
+                        }
+                        @else if (selectedInvoice.stat == 2) {
+                        <p><strong>Status:</strong> Delayed</p>
+                        }
+                    </div>
+
+                    <table class="w-full border rounded-xl overflow-hidden mb-4">
+                        <thead class="bg-gray-100 text-xs text-gray-600 uppercase">
+                            <tr>
+                                <th class="px-3 py-2 text-left">Product</th>
+                                <th class="px-3 py-2 text-left">Qty</th>
+                                <th class="px-3 py-2 text-left">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of selectedInvoice.purchaseOrders; track item.productName) {
+                            <tr class="border-b hover:bg-gray-50 text-sm">
+                                <td class="px-3 py-2">{{item.productName}}</td>
+                                <td class="px-3 py-2">{{item.quantity}}</td>
+                                <td class="px-3 py-2">{{item.costPrice}}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="mt-6 text-right">
+                        <button (click)="closeModal()"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Close
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            }
         </table>
     </div>
 

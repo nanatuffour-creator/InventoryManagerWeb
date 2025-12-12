@@ -42,6 +42,7 @@ export class Purchases implements OnInit {
       this.changeDelayedPurchase();
     }
   }
+
   alls: boolean = true;
   change: boolean = true;
   changes: boolean = true;
@@ -213,5 +214,16 @@ export class Purchases implements OnInit {
 
   savePurchase() {
     console.log('Saved purchase:', this.purchased);
+  }
+
+  showModal = false;
+  selectedInvoice: any = this.allpurchases;
+  openModal(item: any) {
+    this.selectedInvoice = item;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

@@ -5,6 +5,7 @@ import { Customer } from '../../Interfaces/customers';
 import { ProductsInterface } from '../../Interfaces/products';
 import { ProductServices } from '../../Services/ProductServices/product-services';
 import { Chart, registerables } from 'chart.js';
+import { GetPurchaseDto } from '../../Interfaces/purchases';
 Chart.register(...registerables);
 
 @Component({
@@ -15,6 +16,7 @@ Chart.register(...registerables);
 })
 export class Dashboard implements OnInit {
   invoices: InvoiceGetDto[] = [];
+  purchases: GetPurchaseDto[] = [];
   private customerService = inject(CustomerService);
   url = 'http://localhost:5251/api/Invoice/total';
   url1 = 'http://localhost:5251/api/Invoice/today';
@@ -23,6 +25,7 @@ export class Dashboard implements OnInit {
     this.getInvoice();
     this.allCustomers();
     this.getProd();
+    this.getPurchase();
     this.getInvoceTotal();
     this.getPercentageTotalByDate();
     this.getCustomersAddedToday();
@@ -30,6 +33,8 @@ export class Dashboard implements OnInit {
   }
   numberData: any[] = [];
   dateData: any[] = [];
+  amountData: any[] = [];
+  supplierData: any[] = [];
   getInvoice() {
     this.customerService.getInvoices().subscribe({
       next: (value: InvoiceGetDto[]) => {
@@ -41,6 +46,7 @@ export class Dashboard implements OnInit {
             this.dateData.push(o.invoiceId);
           });
           this.renderChart(this.numberData, this.dateData);
+          // this.renderCharts(this.numberData, this.dateData);
         }
       },
       error: (err) => console.log(err),
@@ -64,6 +70,38 @@ export class Dashboard implements OnInit {
       options: {},
     });
   }
+
+  getPurchase() {
+    this.customerService.getPur().subscribe({
+      next: (value : GetPurchaseDto[]) => {
+        this.purchases = value;
+        console.log('Value:', value);
+        if (this.purchases != null) {
+          this.purchases.map((o) => {
+            this.amountData.push(o.date);
+            this.supplierData.push(o.amount);
+          });
+          this.renderCharts(this.numberData, this.dateData);
+        }
+      },
+    });
+  }
+  renderCharts(supplierData: any, amountData: any) {
+    const myChart = new Chart('myCharts', {
+      type: 'bar',
+      data: {
+        labels: amountData,
+        datasets: [
+          {
+            label: 'Purchase Trend',
+            data: supplierData,
+          },
+        ],
+      },
+      options: {},
+    });
+  }
+
   openModal(item: any) {
     this.selectedInvoice = item;
     this.showModal = true;
